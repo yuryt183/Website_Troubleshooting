@@ -1286,7 +1286,7 @@ a:hover {
 }
 
 .card-img:hover .overlay {
-  opacity: 0.5;
+  opacity: 1;
 }
 
 .card-img .overlay span {
@@ -1295,7 +1295,7 @@ a:hover {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 48px;
-  font-weight: bold;
+  font-weight: 800;
 }
 .card-blog .card-description {
   color: #4e4e4e;
