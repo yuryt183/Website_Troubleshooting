@@ -1,6 +1,6 @@
 if(isset($_POST['submit'])) {
   // EDIT THE FOLLOWING LINES AS REQUIRED
-  $email_to = "your_email@your_domain.com";
+  $email_to = "yurypro333@gmail.com";
   $email_subject = "Contact Form Submission";
   
   // get form data
