@@ -23,7 +23,7 @@ if(isset($_POST['submit'])) {
   mail($email_to, $email_subject, $email_message, $headers);
 
   // redirect to success page
-  header('Location: thank-you.html');
+  header('Location: https://yuryt183.github.io/Website_Troubleshooting/');
   exit();
 }
 ?>
