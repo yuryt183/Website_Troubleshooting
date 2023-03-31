@@ -1,29 +1,28 @@
-if(isset($_POST['submit'])) {
-  // EDIT THE FOLLOWING LINES AS REQUIRED
-  $email_to = "yurypro333@gmail.com";
-  $email_subject = "Contact Form Submission";
-  
-  // get form data
-  $name = $_POST['name'];
+<?php
+if (isset($_POST['submit'])) {
+  $full_name = $_POST['full_name'];
   $email = $_POST['email'];
   $subject = $_POST['subject'];
   $message = $_POST['message'];
   
-  // build email headers
-  $headers = "From: $email";
-  $headers .= "Reply-To: $email";
+  // Set the recipient email address here
+  $recipient = "yurypro333@gmail.com";
   
-  // build email content
-  $email_message = "Name: $name\n";
-  $email_message .= "Email: $email\n";
-  $email_message .= "Subject: $subject\n";
-  $email_message .= "Message:\n$message\n";
+  // Set the email subject here
+  $email_subject = "New message from $full_name";
   
-  // send email
-  mail($email_to, $email_subject, $email_message, $headers);
-
-  // redirect to success page
-  header('Location: https://yuryt183.github.io/Website_Troubleshooting/');
-  exit();
+  // Build the email content
+  $email_content = "Name: $full_name\n";
+  $email_content .= "Email: $email\n";
+  $email_content .= "Subject: $subject\n";
+  $email_content .= "Message: $message\n";
+  
+  // Send the email
+  mail($recipient, $email_subject, $email_content);
+  
+  // Redirect to a success page
+  header("https://yuryt183.github.io/Website_Troubleshooting/");
+  exit;
 }
 ?>
+
