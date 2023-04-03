@@ -21,7 +21,7 @@ if (isset($_POST['submit'])) {
   mail($recipient, $email_subject, $email_content);
   
   // Redirect to a success page
-  header("https://yuryt183.github.io/Website_Troubleshooting/");
+  header("Github pages currently doesn't support php scripting. Stay tuned while I try to find a workaround or alternatively, reach out to me through the CONTACT ME link on the top right ");
   exit;
 }
 ?>
