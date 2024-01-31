@@ -1,5 +1,9 @@
+
+
+
+class Ball {
 let balls = [];
-let bgImage; // Variable to store background image
+let bgImage; 
 
 function preload() {
   // Load the background image (replace 'path/to/your/image.jpg' with the actual path)
@@ -24,12 +28,6 @@ function draw() {
     ball.display();
   });
 }
-
-// Rest of the Ball class and other functions
-
-
-
-class Ball {
   constructor() {
     this.position = createVector(random(width), random(height));
     this.velocity = p5.Vector.random2D();
