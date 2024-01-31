@@ -1,16 +1,22 @@
 let balls = [];
+let bgImage; // Variable to store background image
+
+function preload() {
+  // Assuming the image is in the same directory as your sketch
+  bgImage = loadImage('assets/img/background.jpeg'); 
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   // Create 20 balls
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 20; i++) {
     balls.push(new Ball());
   }
 }
 
 function draw() {
-  // Instead of a semi-transparent background, use a solid color
-  background(20); // Dark background for contrast
+  // Draw the background image at position (0, 0) and resize it to the window's width and height
+  image(bgImage, 0, 0, windowWidth, windowHeight);
 
   // Update and display balls
   balls.forEach(ball => {
