@@ -1,7 +1,8 @@
 class Ball {
   constructor() {
     this.position = createVector(random(width), random(height));
-    this.velocity = p5.Vector.random2D().mult(random(1, 3));
+    this.velocity = p5.Vector.random2D();
+    this.speed = random(0.5, 5); // Assign a random speed to each ball
     this.diameter = random(10, 50);
     this.radius = this.diameter / 2;
     this.color = [random(255), random(255), random(255), random(50, 150)];
@@ -9,10 +10,10 @@ class Ball {
 
   update() {
     // Add randomness to the movement
-    if (random(1) < 0.1) { // 10% chance to change direction
-      this.velocity.add(p5.Vector.random2D().mult(random(0.5)));
-      this.velocity.limit(3); // Limit the speed
+    if (random(1) < 0.05) { // 5% chance to change direction
+      this.velocity.add(p5.Vector.random2D());
     }
+    this.velocity.setMag(this.speed); // Set the magnitude of velocity to the ball's speed
 
     this.position.add(this.velocity);
 
@@ -58,4 +59,5 @@ class Ball {
 }
 
 // Rest of your setup and draw functions remain the same
+
 
