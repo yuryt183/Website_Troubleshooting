@@ -1,20 +1,26 @@
 class Ball {
   constructor() {
     this.position = createVector(random(width), random(height));
-    this.velocity = p5.Vector.random2D().mult(random(1, 3)); // Random velocity
+    this.velocity = p5.Vector.random2D().mult(random(1, 3));
     this.diameter = random(10, 50);
+    this.radius = this.diameter / 2;
     this.color = [random(255), random(255), random(255), random(50, 150)];
   }
 
   update() {
-    // Update position based on velocity
+    // Add randomness to the movement
+    if (random(1) < 0.1) { // 10% chance to change direction
+      this.velocity.add(p5.Vector.random2D().mult(random(0.5)));
+      this.velocity.limit(3); // Limit the speed
+    }
+
     this.position.add(this.velocity);
 
-    // Check for collision with walls and reverse velocity if necessary
-    if (this.position.x < 0 || this.position.x > width) {
+    // Bounce off walls
+    if (this.position.x - this.radius < 0 || this.position.x + this.radius > width) {
       this.velocity.x *= -1;
     }
-    if (this.position.y < 0 || this.position.y > height) {
+    if (this.position.y - this.radius < 0 || this.position.y + this.radius > height) {
       this.velocity.y *= -1;
     }
 
@@ -28,14 +34,20 @@ class Ball {
 
   isColliding(other) {
     let distance = p5.Vector.dist(this.position, other.position);
-    return distance < (this.diameter / 2 + other.diameter / 2);
+    return distance < this.radius + other.radius;
   }
 
   handleCollision(other) {
-    // Simple collision response
+    // Exchange velocities
     let temp = this.velocity.copy();
     this.velocity = other.velocity.copy();
     other.velocity = temp;
+
+    // Adjust positions to avoid overlap
+    let overlap = (this.radius + other.radius) - p5.Vector.dist(this.position, other.position);
+    let adjustment = p5.Vector.sub(this.position, other.position).normalize().mult(overlap / 2);
+    this.position.add(adjustment);
+    other.position.sub(adjustment);
   }
 
   display() {
@@ -46,3 +58,4 @@ class Ball {
 }
 
 // Rest of your setup and draw functions remain the same
+
