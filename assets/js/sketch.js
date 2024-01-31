@@ -3,7 +3,7 @@ let bgImage; // Variable to store background image
 
 function preload() {
   // Load the background image (replace 'path/to/your/image.jpg' with the actual path)
-  bgImage = loadImage('path/to/your/image.jpg'); 
+  bgImage = loadImage('assets/img/background.jpeg'); 
 }
 
 function setup() {
