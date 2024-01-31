@@ -1,46 +1,45 @@
 let balls = [];
 
 function setup() {
-    createCanvas(windowWidth, windowHeight);
-    for (let i = 0; i < 10; i++) {
-        balls.push(new Ball());
-    }
+  createCanvas(windowWidth, windowHeight);
+  // Create 20 balls
+  for (let i = 0; i < 50; i++) {
+    balls.push(new Ball());
+  }
 }
 
 function draw() {
-    background(255, 255, 255, 25); // Semi-transparent background (creates the trail effect)
-    balls.forEach(ball => {
-        ball.move();
-        ball.display();
-    });
+  // Instead of a semi-transparent background, use a solid color
+  background(20); // Dark background for contrast
+
+  // Update and display balls
+  balls.forEach(ball => {
+    ball.update(mouseX, mouseY); // Pass the mouse position to each ball
+    ball.display();
+  });
 }
 
 function windowResized() {
-    resizeCanvas(windowWidth, windowHeight);
+  resizeCanvas(windowWidth, windowHeight);
 }
 
 class Ball {
-    constructor() {
-        this.x = random(width);
-        this.y = random(height);
-        this.diameter = random(10, 50);
-        this.xSpeed = random(-2, 20);
-        this.ySpeed = random(-2, 20);
-        this.color = [random(255), random(255), random(255), random(50, 150)]; // RGBA
-    }
+  constructor() {
+    this.position = createVector(random(width), random(height));
+    this.diameter = random(10, 50);
+    this.color = [random(255), random(255), random(255), random(50, 150)]; // RGBA
+  }
 
-    move() {
-        this.x += this.xSpeed;
-        this.y += this.ySpeed;
+  // Update ball's position to follow the cursor
+  update(targetX, targetY) {
+    // Move towards the cursor using p5.Vector lerp
+    let target = createVector(targetX, targetY);
+    this.position.lerp(target, 0.05); // 0.05 is the amount of easing
+  }
 
-        // Bounce off edges
-        if (this.x < 0 || this.x > width) this.xSpeed *= -1;
-        if (this.y < 0 || this.y > height) this.ySpeed *= -1;
-    }
-
-    display() {
-        noStroke();
-        fill(this.color);
-        ellipse(this.x, this.y, this.diameter, this.diameter);
-    }
+  display() {
+    noStroke();
+    fill(this.color);
+    ellipse(this.position.x, this.position.y, this.diameter, this.diameter);
+  }
 }
