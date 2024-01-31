@@ -2,19 +2,24 @@ class Ball {
   constructor() {
     this.position = createVector(random(width), random(height));
     this.velocity = p5.Vector.random2D();
-    this.speed = random(0.5, 5); // Assign a random speed to each ball
+    this.speed = random(0.5, 5); // Random speed
     this.diameter = random(10, 50);
     this.radius = this.diameter / 2;
     this.color = [random(255), random(255), random(255), random(50, 150)];
   }
 
-  update() {
+  update(targetX, targetY) {
+    // Move towards the cursor with easing
+    let target = createVector(targetX, targetY);
+    this.position.lerp(target, 0.05); 
+
     // Add randomness to the movement
     if (random(1) < 0.05) { // 5% chance to change direction
       this.velocity.add(p5.Vector.random2D());
     }
     this.velocity.setMag(this.speed); // Set the magnitude of velocity to the ball's speed
 
+    // Apply the velocity to the position
     this.position.add(this.velocity);
 
     // Bounce off walls
@@ -59,5 +64,3 @@ class Ball {
 }
 
 // Rest of your setup and draw functions remain the same
-
-
