@@ -2,7 +2,7 @@ let balls = [];
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 10; i++) {
         balls.push(new Ball());
     }
 }
@@ -24,8 +24,8 @@ class Ball {
         this.x = random(width);
         this.y = random(height);
         this.diameter = random(10, 50);
-        this.xSpeed = random(-2, 2);
-        this.ySpeed = random(-2, 2);
+        this.xSpeed = random(-2, 20);
+        this.ySpeed = random(-2, 20);
         this.color = [random(255), random(255), random(255), random(50, 150)]; // RGBA
     }
 
