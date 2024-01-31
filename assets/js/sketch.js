@@ -1,3 +1,34 @@
+let balls = [];
+let bgImage; // Variable to store background image
+
+function preload() {
+  // Load the background image (replace 'path/to/your/image.jpg' with the actual path)
+  bgImage = loadImage('path/to/your/image.jpg'); 
+}
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  // Create 20 balls
+  for (let i = 0; i < 20; i++) {
+    balls.push(new Ball());
+  }
+}
+
+function draw() {
+  // Draw the background image
+  background(bgImage);
+
+  // Update and display balls
+  balls.forEach(ball => {
+    ball.update(mouseX, mouseY);
+    ball.display();
+  });
+}
+
+// Rest of the Ball class and other functions
+
+
+
 class Ball {
   constructor() {
     this.position = createVector(random(width), random(height));
