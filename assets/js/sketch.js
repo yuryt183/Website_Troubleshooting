@@ -1,95 +1,95 @@
+document.addEventListener('DOMContentLoaded', function () {
+  const canvas = document.createElement('canvas');
+  canvas.id = 'pongGame';
+  canvas.width = 640;
+  canvas.height = 480;
+  document.getElementById('pong-game-container').appendChild(canvas);
+  const ctx = canvas.getContext('2d');
 
+  const ball = {
+    x: canvas.width / 2,
+    y: canvas.height / 2,
+    radius: 10,
+    velocityX: 5,
+    velocityY: 5,
+    speed: 7,
+    color: 'WHITE'
+  };
 
+  const userPaddle = {
+    x: 0, // left side of canvas
+    y: (canvas.height - 100) / 2, // -100 the height of paddle
+    width: 10,
+    height: 100,
+    color: 'WHITE',
+    score: 0
+  };
 
-class Ball {
-let balls = [];
-let bgImage; 
+  const aiPaddle = {
+    x: canvas.width - 10, // - width of paddle
+    y: (canvas.height - 100) / 2, // -100 the height of paddle
+    width: 10,
+    height: 100,
+    color: 'WHITE',
+    score: 0
+  };
 
-function preload() {
-  // Load the background image (replace 'path/to/your/image.jpg' with the actual path)
-  bgImage = loadImage('assets/img/background.jpeg'); 
-}
-
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-  // Create 20 balls
-  for (let i = 0; i < 20; i++) {
-    balls.push(new Ball());
+  // Draw Paddle
+  function drawRect(x, y, w, h, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, w, h);
   }
-}
 
-function draw() {
-  // Draw the background image
-  background(bgImage);
+  // Draw Ball
+  function drawArc(x, y, r, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fill();
+  }
 
-  // Update and display balls
-  balls.forEach(ball => {
-    ball.update(mouseX, mouseY);
-    ball.display();
+  // Control user paddle
+  canvas.addEventListener('mousemove', (e) => {
+    let rect = canvas.getBoundingClientRect();
+    userPaddle.y = e.clientY - rect.top - userPaddle.height / 2;
   });
-}
-  constructor() {
-    this.position = createVector(random(width), random(height));
-    this.velocity = p5.Vector.random2D();
-    this.speed = random(0.5, 5); // Random speed
-    this.diameter = random(10, 50);
-    this.radius = this.diameter / 2;
-    this.color = [random(255), random(255), random(255), random(50, 150)];
+
+  // Reset ball to center after scoring
+  function resetBall() {
+    ball.x = canvas.width / 2;
+    ball.y = canvas.height / 2;
+    ball.velocityX = -ball.velocityX;
+    ball.speed = 7;
   }
 
-  update(targetX, targetY) {
-    // Move towards the cursor with easing
-    let target = createVector(targetX, targetY);
-    this.position.lerp(target, 0.05); 
-
-    // Add randomness to the movement
-    if (random(1) < 0.05) { // 5% chance to change direction
-      this.velocity.add(p5.Vector.random2D());
+  // Update function, to update objects positions
+  function update() {
+    if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) {
+      ball.velocityY = -ball.velocityY;
     }
-    this.velocity.setMag(this.speed); // Set the magnitude of velocity to the ball's speed
-
-    // Apply the velocity to the position
-    this.position.add(this.velocity);
-
-    // Bounce off walls
-    if (this.position.x - this.radius < 0 || this.position.x + this.radius > width) {
-      this.velocity.x *= -1;
-    }
-    if (this.position.y - this.radius < 0 || this.position.y + this.radius > height) {
-      this.velocity.y *= -1;
+    if (ball.x < 0) {
+      aiPaddle.score++;
+      resetBall();
+    } else if (ball.x > canvas.width) {
+      userPaddle.score++;
+      resetBall();
     }
 
-    // Check for collision with other balls
-    for (let other of balls) {
-      if (other !== this && this.isColliding(other)) {
-        this.handleCollision(other);
-      }
-    }
-  }
+    ball.x += ball.velocityX;
+    ball.y += ball.velocityY;
 
-  isColliding(other) {
-    let distance = p5.Vector.dist(this.position, other.position);
-    return distance < this.radius + other.radius;
-  }
+    // AI to control the aiPaddle (very simple AI)
+    aiPaddle.y += ((ball.y - (aiPaddle.y + aiPaddle.height / 2))) * 0.1;
 
-  handleCollision(other) {
-    // Exchange velocities
-    let temp = this.velocity.copy();
-    this.velocity = other.velocity.copy();
-    other.velocity = temp;
+    // Collision detection on paddles
+    let player = (ball.x < canvas.width / 2) ? userPaddle : aiPaddle;
+    if (collisionDetect(player, ball)) {
+      let collidePoint = (ball.y - (player.y + player.height / 2));
+      collidePoint = collidePoint / (player.height / 2);
 
-    // Adjust positions to avoid overlap
-    let overlap = (this.radius + other.radius) - p5.Vector.dist(this.position, other.position);
-    let adjustment = p5.Vector.sub(this.position, other.position).normalize().mult(overlap / 2);
-    this.position.add(adjustment);
-    other.position.sub(adjustment);
-  }
+      let angleRad = (Math.PI / 4) * collidePoint;
 
-  display() {
-    noStroke();
-    fill(this.color);
-    ellipse(this.position.x, this.position.y, this.diameter, this.diameter);
-  }
-}
-
-// Rest of your setup and draw functions remain the same
+      let direction = (ball.x < canvas.width / 2) ? 1 : -1;
+      ball.velocityX = direction * ball.speed * Math.cos(angleRad);
+     
