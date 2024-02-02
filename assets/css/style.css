@@ -1129,6 +1129,33 @@ a:hover {
 /*--------------------------------------------------------------
 # Contact
 --------------------------------------------------------------*/
+/* Add these styles to your CSS file */
+#pong-game-container {
+  width: 640px;
+  height: 480px;
+  position: relative;
+  background-color: black;
+  margin: auto;
+}
+.paddle {
+  width: 20px;
+  height: 100px;
+  background-color: white;
+  position: absolute;
+}
+.ball {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  position: absolute;
+  border-radius: 50%;
+}
+
+
+
+
+
+
 .footer-paralax {
   padding: 4rem 0 0 0;
 }
